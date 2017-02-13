@@ -2,6 +2,7 @@ package app.zhangpeng.AIHouse;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,9 @@ public class Note_Activity extends AppCompatActivity {
     private ListView_Adapter listViewAdapter;
     private List<Map<String,String>> data;
     private Map<String,String> map;
+    public SharedPreferences HouseX_Sp;
+    public SharedPreferences.Editor HouseX_Ed;
+    private Calendar c;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +42,8 @@ public class Note_Activity extends AppCompatActivity {
             }
         });
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        map=new HashMap<String, String>();
-        data=new ArrayList<Map<String, String>>();
 
+        data=new ArrayList<Map<String, String>>();
         listView=(ListView)findViewById(R.id.ListView);
         listViewAdapter=new ListView_Adapter(this,data);
         listView.setAdapter(listViewAdapter);
@@ -63,15 +67,21 @@ public class Note_Activity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText editText=new EditText(Note_Activity.this);
+                final EditText editText=new EditText(Note_Activity.this);
                 AlertDialog.Builder dialog=new AlertDialog.Builder(Note_Activity.this);
                 dialog.setTitle("请输入收入金额");
                 dialog.setView(editText);
                 dialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        map.put("money","1500");
-                        map.put("date","2018-8-8");
+                        map=new HashMap<String, String>();
+                        c= Calendar.getInstance();
+                        int year = c.get(Calendar.YEAR);
+                        int month = c.get(Calendar.MONTH);
+                        int day = c.get(Calendar.DAY_OF_MONTH);
+                        map.put("money",editText.getText().toString());
+                        map.put("date",Integer.toString(year)+"-"+Integer
+                                .toString(month)+"-"+Integer.toString(day));
                         data.add(map);
                         listViewAdapter.notifyDataSetChanged();
                     }

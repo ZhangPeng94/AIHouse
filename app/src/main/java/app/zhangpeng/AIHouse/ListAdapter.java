@@ -58,8 +58,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ItemViewHolder
                 HouseX=context.getSharedPreferences("house7",context.MODE_PRIVATE);
                 break;
             case 7:
-                HouseX=context.getSharedPreferences("house8" +
-                        "",context.MODE_PRIVATE);
+                HouseX=context.getSharedPreferences("house8",context.MODE_PRIVATE);
                 break;
         }
         if (HouseX.getInt("variety",0)==0){

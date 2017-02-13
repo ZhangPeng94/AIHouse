@@ -37,7 +37,7 @@ public class House extends AppCompatActivity {//需要返回数据给上层activ
     private int[] icon={R.drawable.hongmaoji,R.drawable.pen,R.drawable.calendar,
                         R.drawable.feed,R.drawable.syringe,R.drawable.rmb};
     private String[] name={"选择种类","数量编辑","日期设置","饲料","预防","记账"};
-    final String[] strings={"红毛肉鸡","乌骨鸡","杂交鸡"};
+    final String[] strings={"红毛","乌毛","黄毛"};
     protected float[][] points = new float[][]{{0,33},{1, 30}, {2, 35}, {3, 38}, {4, 37}, {5, 34},
             {6, 36}, {7,32}, {8, 37}, {9, 35},
             {10, 31},{11, 33}, {12, 32}, {13,37}, {14, 38}, {15,
@@ -174,6 +174,8 @@ public class House extends AppCompatActivity {//需要返回数据给上层activ
                         Toast.makeText(House.this,"预防",Toast.LENGTH_SHORT).show();
                         break;
                     case 5:
+                        Intent intent1=new Intent(House.this,Note_Activity.class);
+                        startActivity(intent1);
                         Toast.makeText(House.this,"记账",Toast.LENGTH_SHORT).show();
                         break;
                     default:

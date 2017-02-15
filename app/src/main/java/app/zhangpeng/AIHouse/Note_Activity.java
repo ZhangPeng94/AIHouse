@@ -32,13 +32,14 @@ public class Note_Activity extends AppCompatActivity {
     private Map<String,String> map;
     private Calendar c;
     private Note_SqlLite sqlLite;
+    private Cursor cursor;
+    private SQLiteDatabase SD;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        toolbar.inflateMenu(R.menu.note_menu_item);
         toolbar.setNavigationIcon(R.mipmap.ic_arrow_back_white_36dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,17 +54,17 @@ public class Note_Activity extends AppCompatActivity {
         listViewAdapter=new ListView_Adapter(this,data);
         listView.setAdapter(listViewAdapter);
         listView.setDivider(null);
-         SQLiteDatabase SD=sqlLite.getWritableDatabase();
-        final Cursor cursor=SD.query("note",null,null,null,null,null,null,null);
+        SD=sqlLite.getWritableDatabase();
+        cursor=SD.query("note",null,null,null,null,null,null,null);
         cursor.moveToFirst();
         for (int i=0;i<cursor.getCount();i++){
             map=new HashMap<String, String>();
             map.put("money",cursor.getString(1));
             map.put("date",cursor.getString(2));
+            map.put("time",cursor.getString(3));
             data.add(map);
             cursor.moveToNext();
         }
-
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -73,8 +74,10 @@ public class Note_Activity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         data.remove(position);
+                        SD=sqlLite.getWritableDatabase();
+                        cursor=SD.query("note",null,null,null,null,null,null,null);
                         cursor.moveToPosition(position);
-                        sqlLite.getWritableDatabase().execSQL("DELETE FROM note where time=?",new String[]{new String(cursor.getString(3))});
+                        sqlLite.getWritableDatabase().execSQL("DELETE FROM note where time=?",new String[]{cursor.getString(3)});
                         listViewAdapter.notifyDataSetChanged();
                     }
                 }).show();
@@ -91,6 +94,7 @@ public class Note_Activity extends AppCompatActivity {
                     clear.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            data.clear();
                             sqlLite.getWritableDatabase().execSQL("DELETE FROM note");
                             listViewAdapter.notifyDataSetChanged();
                         }

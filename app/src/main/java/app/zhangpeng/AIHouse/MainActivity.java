@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private RecyclerView recyclerView;
     private List<String> datas;
-    private ListAdapter mListAdapter;
+    public static ListAdapter mListAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity
                 Intent intent=new Intent(MainActivity.this,House.class);
                 intent.putExtra("name",data);
                 startActivity(intent);
-                finish();
             }
         });
         recyclerView.setAdapter(mListAdapter);

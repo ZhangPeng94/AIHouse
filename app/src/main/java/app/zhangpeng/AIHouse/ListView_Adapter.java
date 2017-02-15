@@ -29,6 +29,7 @@ public class ListView_Adapter extends BaseAdapter {
     private class Holder{
         public TextView tx1;
         public TextView tx2;
+        public TextView tx3;
         public TextView getTx1(){
             return tx1;
         }
@@ -40,6 +41,12 @@ public class ListView_Adapter extends BaseAdapter {
         }
         public void setTx2(TextView item_tex) {
             this.tx2 = item_tex;
+        }
+        public TextView getTx3(){
+            return tx3;
+        }
+        public void setTx3(TextView item_tex) {
+            this.tx3 = item_tex;
         }
     }
     @Override
@@ -62,12 +69,14 @@ public class ListView_Adapter extends BaseAdapter {
             holder=new ListView_Adapter.Holder();
             holder.tx1=(TextView)view.findViewById(R.id.tx1);
             holder.tx2=(TextView)view.findViewById(R.id.tx2);
+            holder.tx3=(TextView)view.findViewById(R.id.tx3);
             view.setTag(holder);
         }else{
             holder=(ListView_Adapter.Holder) view.getTag();
         }
         holder.tx1.setText(data.get(position).get("money"));
         holder.tx2.setText(data.get(position).get("date"));
+        holder.tx3.setText(data.get(position).get("time"));
         return view;
     }
 }

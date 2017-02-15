@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -89,8 +90,8 @@ public class House extends AppCompatActivity {//需要返回数据给上层activ
             @Override
             public void onClick(View v) {
                 finish();
-                Intent intent=new Intent(House.this,MainActivity.class);
-                startActivity(intent);
+//                Intent intent=new Intent(House.this,MainActivity.class);
+//                startActivity(intent);
             }
         });
         initData();
@@ -131,6 +132,8 @@ public class House extends AppCompatActivity {//需要返回数据给上层activ
                                     HouseX_Ed.putInt("variety",variety);
                                     HouseX_Ed.apply();
                                     adapter.notifyDataSetChanged();
+                                    MainActivity mainActivity=new MainActivity();
+                                    mainActivity.mListAdapter.notifyDataSetChanged();
                                 }
                             }
                         });
@@ -140,9 +143,10 @@ public class House extends AppCompatActivity {//需要返回数据给上层activ
                     case 1:
                         final EditText editText=new EditText(House.this);
                         AlertDialog.Builder num=new AlertDialog.Builder(House.this);
-                        num.setTitle("请输入装入数量：");
+                        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                        num.setTitle("当前装入量为：");
                         num.setView(editText);
-                        editText.setText(HouseX_Sp.getString("number","0"));
+                        editText.setText(HouseX_Sp.getString("number","0")+"只");
                         num.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -159,13 +163,16 @@ public class House extends AppCompatActivity {//需要返回数据给上层activ
                         Toast.makeText(House.this,"日期设置",Toast.LENGTH_SHORT).show();
                         break;
                     case 3:
-                        EditText editText1=new EditText(House.this);
+                        final EditText editText1=new EditText(House.this);
+                        editText1.setInputType(InputType.TYPE_CLASS_NUMBER);
                         AlertDialog.Builder feednum=new AlertDialog.Builder(House.this);
-                        feednum.setTitle("请输入饲料数量").setView(editText1)
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        feednum.setTitle("饲料已使用量").setView(editText1);
+                        editText1.setText(HouseX_Sp.getString("foodnum","0")+"袋");
+                        feednum.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                HouseX_Ed.putString("foodnum",editText1.getText().toString());
+                                HouseX_Ed.apply();
                             }
                         }).show();
                         Toast.makeText(House.this,"饲料",Toast.LENGTH_SHORT).show();
@@ -203,10 +210,10 @@ public class House extends AppCompatActivity {//需要返回数据给上层activ
         DataList.add(lineData);
 
     }
-    @Override
-    public void onBackPressed(){
-        finish();
-        Intent intent=new Intent(House.this,MainActivity.class);
-        startActivity(intent);
-    }
+//    @Override
+//    public void onBackPressed(){
+//        finish();
+//        Intent intent=new Intent(House.this,MainActivity.class);
+//        startActivity(intent);
+//    }
 }

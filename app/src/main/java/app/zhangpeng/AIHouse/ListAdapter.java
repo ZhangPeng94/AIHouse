@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import app.zhangpeng.greenhouse.R;
@@ -23,6 +27,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ItemViewHolder
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
     private SharedPreferences HouseX;
     private static Context context;
+    private SimpleDateFormat format;
+    private Calendar day,today;
+    ParsePosition position ;
     public ListAdapter(Context context, List<String> mDatas){
         this.mDatas=mDatas;
         mInflater=LayoutInflater.from(context);
@@ -68,6 +75,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ItemViewHolder
         }else if (HouseX.getInt("variety",0)==2) {
             itemViewHolder.imageView.setImageResource(R.drawable.zajiaoji);
         }
+        position= new ParsePosition(0);
+        format=new SimpleDateFormat("yyyy-MM-dd");
+        day=Calendar.getInstance();
+        today=Calendar.getInstance();
+        day.setTime(format.parse(HouseX.getString("date","2017-1-1"),position));
+        today.setTime(new Date());
+        itemViewHolder.days.setText(Integer.toString(day_number(today,day))+"天");
         itemViewHolder.itemView.setTag(mDatas.get(i));
     }
     @Override
@@ -110,10 +124,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ItemViewHolder
     class ItemViewHolder extends RecyclerView.ViewHolder {//创建自己的viewholder类
         TextView mTextview;
         ImageView imageView;
+        TextView days;
         public ItemViewHolder(View itemView) {
             super(itemView);
             mTextview=(TextView) itemView.findViewById(R.id.mTextview);
             imageView=(ImageView) itemView.findViewById(R.id.imageView6);
+            days=(TextView)itemView.findViewById(R.id.textView2);
         }
     }
     public static interface OnRecyclerViewItemClickListener{
@@ -122,5 +138,17 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ItemViewHolder
     public Context getContex(Context context){
         this.context=context;
         return this.context;
+    }
+    public int day_number(Calendar after_day, Calendar before_day){
+        int days;
+        if (after_day.get(Calendar.YEAR)==before_day.get(Calendar.YEAR))
+        {
+            days=after_day.get(Calendar.DAY_OF_YEAR)-before_day.get(Calendar.DAY_OF_YEAR);
+        }
+        else
+        {
+            days=before_day.getMaximum(Calendar.DAY_OF_YEAR)-before_day.get(Calendar.DAY_OF_YEAR)+after_day.get(Calendar.DAY_OF_YEAR);
+        }
+        return days;
     }
 }

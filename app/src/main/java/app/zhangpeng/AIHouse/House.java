@@ -54,7 +54,7 @@ public class House extends AppCompatActivity {//需要返回数据给上层activ
         Intent intent=this.getIntent();
         house=intent.getStringExtra("name");
         toolbar.setTitle("温室"+house+"号");
-        DateDialog date=new DateDialog();
+        final DateDialog date=new DateDialog();
         if (house.equals("1")){
             HouseX_Ed=getSharedPreferences("house1",MODE_PRIVATE).edit();
             HouseX_Sp=getSharedPreferences("house1",MODE_PRIVATE);
@@ -210,10 +210,4 @@ public class House extends AppCompatActivity {//需要返回数据给上层activ
         DataList.add(lineData);
 
     }
-//    @Override
-//    public void onBackPressed(){
-//        finish();
-//        Intent intent=new Intent(House.this,MainActivity.class);
-//        startActivity(intent);
-//    }
 }

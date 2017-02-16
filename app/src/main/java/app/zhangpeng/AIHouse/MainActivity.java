@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import app.zhangpeng.greenhouse.R;
@@ -113,9 +114,10 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
     protected void initData() {
-        datas = new ArrayList<String>();
+        datas = new ArrayList<>();
         for (int i = 1; i < 9; i++) {
             datas.add(String.valueOf(i));
         }
     }
+
 }

@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,7 +48,7 @@ public class Note_Activity extends AppCompatActivity {
         });
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         sqlLite=new Note_SqlLite(this,"Database.db",null,1);//使用数据库保存输入的数据
-        data=new ArrayList<Map<String, String>>();
+        data=new ArrayList<Map<String,String>>();
         listView=(ListView)findViewById(R.id.ListView);
         listViewAdapter=new ListView_Adapter(this,data);
         listView.setAdapter(listViewAdapter);
@@ -58,10 +57,10 @@ public class Note_Activity extends AppCompatActivity {
         cursor=SD.query("note",null,null,null,null,null,null,null);
         cursor.moveToFirst();
         for (int i=0;i<cursor.getCount();i++){
-            map=new HashMap<String, String>();
-            map.put("money",cursor.getString(1));
-            map.put("date",cursor.getString(2));
-            map.put("time",cursor.getString(3));
+            map=new HashMap<>();
+            map.put("money",cursor.getString(0));
+            map.put("date",cursor.getString(1));
+            map.put("time",cursor.getString(2));
             data.add(map);
             cursor.moveToNext();
         }
@@ -77,7 +76,7 @@ public class Note_Activity extends AppCompatActivity {
                         SD=sqlLite.getWritableDatabase();
                         cursor=SD.query("note",null,null,null,null,null,null,null);
                         cursor.moveToPosition(position);
-                        sqlLite.getWritableDatabase().execSQL("DELETE FROM note where time=?",new String[]{cursor.getString(3)});
+                        sqlLite.getWritableDatabase().execSQL("DELETE FROM note where time=?",new String[]{cursor.getString(2)});
                         listViewAdapter.notifyDataSetChanged();
                     }
                 }).show();
